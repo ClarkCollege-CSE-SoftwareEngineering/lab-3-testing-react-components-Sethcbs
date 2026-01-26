@@ -1114,3 +1114,24 @@ export default defineConfig({
 - 🔗 [Testing Library Query Priority](https://testing-library.com/docs/queries/about#priority)
 - 🔗 [Vitest Documentation](https://vitest.dev/)
 - 🔗 [Common Testing Library Mistakes](https://kentcdodds.com/blog/common-mistakes-with-react-testing-library)
+
+
+Seth Stigall 1/25/2026
+Reflection Section:
+    Using getByRole and getByLabelText improve the readability of code compared to just using
+    getByTestId because they're more descriptive. For example by using getByRole("id") you
+    already know that you're looking for an object that serves as an id. You could also use
+    getByLabelText and you can assume you'll be looking for a form object and identify it
+    by its label text. 
+
+    You want to use getBy to confirm that a node exists, and you would
+    rather use queryBy if you want to confirm that a node doesn't exist. queryBy returns null
+    if it doesn't find the node that you are looking for rather than throwing an error.
+
+    The trade-offs of mocking API calls vs testing against a real backend is control, 
+    consistency, and safety. By using a mocked API call the developer can specify 
+    certain API calls, like when we want to test if the call fails. There is also a 
+    risk of making API calls when the service you are using is down, and so this could
+    result in inconsistent tests that fail even if all the logic is correct. If you
+    plan to use a real backend there is also the risk of you causing issues with
+    client data. 
