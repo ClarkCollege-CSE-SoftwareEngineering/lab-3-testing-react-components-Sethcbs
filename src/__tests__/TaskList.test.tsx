@@ -174,6 +174,7 @@ describe('TaskList', () => {
       await user.click(screen.getByRole('button', { name: /add task/i }));
 
       expect(await screen.findByRole('alert')).toHaveTextContent(/failed to add task/i);
+      expect(await screen.findByText(/no tasks yet/i)).toBeInTheDocument();
     });
   });
 });
