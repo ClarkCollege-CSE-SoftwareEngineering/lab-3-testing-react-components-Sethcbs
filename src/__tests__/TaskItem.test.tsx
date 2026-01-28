@@ -12,17 +12,6 @@ describe("TaskItem", () => {
     ...overrides,
   });
 
-  /*
-  const renderTask = (task: Task, props = {}) => {
-    const defaultProps = {
-      onToggle: vi.fn(),
-      onDelete: vi.fn(),
-    };
-    
-    return render(<TaskItem task={task} {...defaultProps} {...props} />);
-  };
-  */
-
   describe("rendering", () => {
     it("displays the task title", () => {
       const task = createTask({ title: "Buy groceries" });

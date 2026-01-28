@@ -177,4 +177,50 @@ describe('TaskList', () => {
       expect(await screen.findByText(/no tasks yet/i)).toBeInTheDocument();
     });
   });
+//new test for tab action
+  describe('keyboard navigation', () => {
+    it('tab through task actions properly', async () => {
+      const user = userEvent.setup();
+      
+      mockedTaskApi.fetchTasks.mockResolvedValue([
+        { id: '1', title: 'First task', completed: false },
+        { id: '2', title: 'Second task', completed: true},
+      ]);
+    
+      render(<TaskList />);
+    
+      await screen.findByText(/First task/i);
+    
+      await user.tab(); 
+      const input = screen.getByRole('textbox', { name: /task title/i });
+      expect(input).toHaveFocus();
+    
+      await user.tab(); 
+      const addButton = screen.getByRole('button', { name: /add task/i });
+      expect(addButton).toHaveFocus();
+    
+      await user.tab();
+      const checkboxes = screen.getAllByRole('checkbox');
+      expect(checkboxes[0]).toHaveFocus();
+    
+      await user.tab();
+      const deleteButtons = screen.getAllByRole('button', { name: /delete/i });
+      expect(deleteButtons[0]).toHaveFocus();
+    });
+  });
+  describe('rendering stability', () => {
+    //adding test for very long titles
+    it('can render a very long title', async () => {
+      const longTitle = 'a'.repeat(10000);
+      mockedTaskApi.fetchTasks.mockResolvedValue([
+        { id: '1', title: longTitle, completed: false },
+      ])
+
+      render(<TaskList />);
+
+      const taskElement = await screen.findByText((longTitle));
+
+      expect(taskElement).toBeInTheDocument();
+    });
+  });
 });

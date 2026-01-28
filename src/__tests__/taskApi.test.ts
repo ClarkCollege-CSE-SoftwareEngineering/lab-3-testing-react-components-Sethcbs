@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { fetchTasks, createTask, deleteTask, toggleTask } from '../api/taskApi';
+import { fetchTasks, createTask, deleteTask, toggleTask} from '../api/taskApi';
 
 describe('taskApi', () => {
   // Store the original fetch
@@ -60,7 +60,8 @@ describe('taskApi', () => {
 
       //this actually calls our creatTask function,
       //passing in Task 1 as our data
-      const result = await createTask('Task 1');
+      const newTaskTitle = { title: 'Task 1'};
+      const result = await createTask(newTaskTitle);
 
       //verify that our result from calling createTask
       //is equal to our mock task
@@ -72,7 +73,7 @@ describe('taskApi', () => {
         expect.objectContaining({
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify('Task 1'),
+          body: JSON.stringify(newTaskTitle),
         })
       );
     });
@@ -83,7 +84,9 @@ describe('taskApi', () => {
         status: 500,
       } as Response);
 
-      await expect(createTask()).rejects.toThrow('Failed to create task');
+
+      const newTaskTitle = { title: 'Task 1'};
+      await expect(createTask(newTaskTitle)).rejects.toThrow('Failed to create task');
     });
   });
 
@@ -96,7 +99,7 @@ describe('taskApi', () => {
         ok: true,
       } as Response);
 
-      await deleteTask(1);
+      await deleteTask('1');
 
       expect(global.fetch).toHaveBeenCalledWith(
         '/api/tasks/1',
@@ -111,7 +114,7 @@ describe('taskApi', () => {
         ok: false,
       } as Response);
 
-      await expect(deleteTask()).rejects.toThrow('Failed to delete task');
+      await expect(deleteTask('1')).rejects.toThrow('Failed to delete task');
     });
   });
 
@@ -127,7 +130,7 @@ describe('taskApi', () => {
         json: () => Promise.resolve(mockTask),
       } as Response);
 
-      const result = await toggleTask('1', true);
+      await toggleTask('1', true);
 
       expect(global.fetch).toHaveBeenCalledWith(
         '/api/tasks/1',
@@ -148,7 +151,7 @@ describe('taskApi', () => {
         json: () => Promise.resolve(mockTask),
       } as Response);
 
-      await expect(toggleTask()).rejects.toThrow('Failed to update task');
+      await expect(toggleTask('1', true)).rejects.toThrow('Failed to update task');
 
     });
   });
